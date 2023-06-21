@@ -1,0 +1,38 @@
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+$black: #000;
+$white: #fff;
+$cell-exit: #d72638;
+$cell-wall: #232528;
+$cell-start: #3f88c5;
+$cell-searched: #ffc914;
+$cell-path: #0cca4a;
+$cell-normal: #fcfafa;
+
+$cell-size: 20px;
+.hub {
+  width: 80vw;
+  height: 100vh;
+  .board {
+    @include flex-center();
+    flex-direction: column;
+    //   width: 100vw;
+    .row {
+      @include flex-center();
+      //   flex-direction: column;
+    }
+    .cell {
+      @include flex-center();
+      border: 0.5px solid $black;
+      width: $cell-size;
+      height: $cell-size;
+      background-color: $cell-normal;
+      &:hover {
+        background-color: darken($cell-normal, 20);
+      }
+    }
+  }
+}
