@@ -16,6 +16,11 @@ $cell-size: 20px;
 .hub {
   width: 80vw;
   height: 100vh;
+  .toolbar {
+    .active {
+      background-color: $cell-path;
+    }
+  }
   .board {
     @include flex-center();
     flex-direction: column;
