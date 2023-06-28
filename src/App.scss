@@ -36,6 +36,7 @@ $cell-size: 20px;
       height: $cell-size;
       // background-color: $cell-normal;
       color: $black;
+      user-select: none;
       &:hover {
         background-color: darken($cell-normal, 20);
       }

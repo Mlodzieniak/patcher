@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Board } from "../components/Board";
-import Tools from "../components/Tools";
+import Tools, { ToolType } from "../components/Tools";
 interface FoundCell {
   x: number;
   y: number;
@@ -12,7 +12,7 @@ export default function Hub() {
   const [width, setWidth] = useState(30);
   const [height, setHeight] = useState(30);
   const [inspectedCell, setInspectedCell] = useState("");
-  const [tool, setTool] = useState("");
+  const [tool, setTool] = useState<ToolType>("pencil");
 
   const checkSize = (stringSize: string): number => {
     const intSize = parseInt(stringSize);
@@ -20,14 +20,14 @@ export default function Hub() {
     if (intSize < 10) return 10;
     else return intSize;
   };
-  const readCell: CellCords = (event) => {
-    const x = (event.target as HTMLElement).getAttribute("data-x");
-    const y = (event.target as HTMLElement).getAttribute("data-y");
-    return { x, y };
-  };
-  const drawWall: DrawWall = (cords) => {
-    console.log(cords);
-  };
+  // const readCell: CellCords = (event) => {
+  //   const x = (event.target as HTMLElement).getAttribute("data-x");
+  //   const y = (event.target as HTMLElement).getAttribute("data-y");
+  //   return { x, y };
+  // };
+  // const drawWall: DrawWall = (cords) => {
+  //   console.log(cords);
+  // };
   return (
     <div className="hub">
       <div>Hub</div>
@@ -58,6 +58,7 @@ export default function Hub() {
         width={width}
         height={height}
         inspectCell={setInspectedCell}
+        currentTool={tool}
       ></Board>
     </div>
   );

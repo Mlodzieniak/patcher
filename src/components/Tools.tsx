@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 type HandleToolClick = (event: React.MouseEvent<HTMLButtonElement>) => void;
+export type ToolType = "pencil" | "eraser" | "start" | "end";
+export enum ToolPicker {
+  pencil = "pencil",
+  eraser = "eraser",
+  start = "start",
+  end = "end",
+}
 interface Props {
   setTool: (tool: string) => void;
   tool: string;
@@ -13,32 +20,32 @@ export default function Tools(props: Props) {
     <div className="toolbar">
       <button
         type="button"
-        value="pencil"
-        className={tool === "pencil" ? "active" : ""}
+        value={ToolPicker.pencil}
+        className={tool === ToolPicker.pencil ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
       >
-        Pensil
+        Pencil
       </button>
       <button
         type="button"
-        value="eraser"
-        className={tool === "eraser" ? "active" : ""}
+        value={ToolPicker.eraser}
+        className={tool === ToolPicker.eraser ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
       >
         Eraser
       </button>
       <button
         type="button"
-        value="start"
-        className={tool === "start" ? "active" : ""}
+        value={ToolPicker.start}
+        className={tool === ToolPicker.start ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
       >
         Set Start
       </button>
       <button
         type="button"
-        value="end"
-        className={tool === "end" ? "active" : ""}
+        value={ToolPicker.end}
+        className={tool === ToolPicker.end ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
       >
         Set End

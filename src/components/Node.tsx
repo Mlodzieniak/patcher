@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState } from "react";
+import { ToolPicker, ToolType } from "./Tools";
 
 // interface Props{
 
@@ -7,6 +8,7 @@ enum NodeState {
   start = "start",
   end = "end",
   wall = "wall",
+  normal = "normal",
 }
 enum Colors {
   end = "#d72638", // red
@@ -16,6 +18,7 @@ enum Colors {
   path = "#0cca4a", //green
   normal = "#fcfafa", // white
 }
+
 interface NodeParams {
   isStart: boolean;
   isEnd: boolean;
@@ -27,10 +30,19 @@ interface Cords {
 }
 interface Props {
   cords: Cords;
+  currentTool: ToolType;
+  mouseHold: boolean;
   inspectCell: (cell: string) => void;
 }
 
 export const Node = (props: Props) => {
+  const { cords, inspectCell, currentTool, mouseHold } = props;
+  const [color, setColor] = useState<Colors>(Colors.normal);
+  const [discovered, setDiscovered] = useState<boolean>(false);
+  const [x, setX] = useState<number>(cords.x);
+  const [y, setY] = useState<number>(cords.y);
+  //   const [isMouseHold, setMouseHold] = useEffect(mouseHold);
+
   const reducer = (state: NodeParams, action: NodeState) => {
     switch (action) {
       case NodeState.start:
@@ -54,24 +66,44 @@ export const Node = (props: Props) => {
           isEnd: false,
           isWall: true,
         };
+
+      case NodeState.normal:
+        return {
+          ...state,
+          isStart: false,
+          isEnd: false,
+          isWall: false,
+        };
     }
   };
+
   const [params, dispatch] = useReducer(reducer, {
     isStart: false,
     isEnd: false,
     isWall: false,
   });
-  //   const colorReducer = (state, action:)=>{
-
-  //   }
-  const [color, setColor] = useState<Colors>(Colors.normal);
-
-  const [discovered, setDiscovered] = useState<boolean>(false);
-  const [x, setX] = useState<number>(props.cords.x);
-  const [y, setY] = useState<number>(props.cords.y);
-  //   console.log(params);
+  const handleClick = () => {
+    // console.log(event);
+    inspectCell(`x:${x}, y:${y}, ${JSON.stringify(params)}`);
+    console.log(mouseHold);
+    if (mouseHold) {
+      switch (currentTool) {
+        case ToolPicker.pencil:
+          dispatch(NodeState.wall);
+          break;
+        case ToolPicker.eraser:
+          dispatch(NodeState.normal);
+          break;
+        case ToolPicker.end:
+          dispatch(NodeState.end);
+          break;
+        case ToolPicker.start:
+          dispatch(NodeState.start);
+          break;
+      }
+    }
+  };
   useEffect(() => {
-    // const {isStart, isEnd, isWall} = parm
     if (params.isStart) {
       setColor(Colors.start);
     } else if (params.isEnd) {
@@ -87,9 +119,8 @@ export const Node = (props: Props) => {
     <div
       className="cell"
       style={{ backgroundColor: color }}
-      onClick={() =>
-        props.inspectCell(`x:${x}, y:${y}, ${JSON.stringify(params)}`)
-      }
+      //   onClick={() => inspectCell(`x:${x}, y:${y}, ${JSON.stringify(params)}`)}
+      onMouseEnter={handleClick}
     >
       {x}
     </div>
