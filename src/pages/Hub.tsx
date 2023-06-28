@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Board from "../components/Board";
+import { Board } from "../components/Board";
 import Tools from "../components/Tools";
 interface FoundCell {
   x: number;

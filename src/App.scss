@@ -34,7 +34,7 @@ $cell-size: 20px;
       border: 0.5px solid $black;
       width: $cell-size;
       height: $cell-size;
-      background-color: $cell-normal;
+      // background-color: $cell-normal;
       color: $black;
       &:hover {
         background-color: darken($cell-normal, 20);
