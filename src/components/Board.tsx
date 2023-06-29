@@ -1,4 +1,4 @@
-import { useEffect, useState, FC } from "react";
+import { useEffect, useState, FC, useRef } from "react";
 import { Node } from "./Node";
 import { ToolType, ToolPicker } from "./Tools";
 interface Props {
@@ -11,33 +11,6 @@ interface Props {
 export const Board: FC<Props> = (props) => {
   const { width, height, inspectCell, currentTool } = props;
   const [board, setBoard] = useState<[]>([]);
-  const [mouseHold, setMouseHold] = useState(false);
-
-  // useEffect(() => {
-  //   switch(currentTool){
-  //     case ToolPicker.pencil:
-
-  //   }
-  // }, [currentTool]);
-  useEffect(() => {
-    const handleMouseDown = () => {
-      setMouseHold(true);
-    };
-    const handleMouseUp = () => {
-      setMouseHold(false);
-    };
-    document.addEventListener("mousedown", handleMouseDown);
-
-    document.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("mousemove", () => {
-      console.log(mouseHold);
-    });
-    return () => {
-      document.removeEventListener("mousedown", handleMouseDown);
-
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, []);
 
   useEffect(() => {
     const newBoard = [];
@@ -50,7 +23,6 @@ export const Board: FC<Props> = (props) => {
             inspectCell={inspectCell}
             key={`${i}${j}`}
             currentTool={currentTool}
-            mouseHold={mouseHold}
           />
         );
         row.push(newCell);
@@ -58,13 +30,13 @@ export const Board: FC<Props> = (props) => {
       newBoard.push(row);
     }
     setBoard(newBoard);
-  }, [width, height]);
+  }, [width, height, currentTool]);
   return (
     <div className="board">
       {board.map((row, i) => {
         return (
           <div className="row" key={i}>
-            {row.map((cell, j) => {
+            {row.map((cell) => {
               return cell;
             })}
           </div>

@@ -9,8 +9,8 @@ type CellCords = (event: MouseEvent) => FoundCell;
 type DrawWall = (cords: FoundCell) => void;
 
 export default function Hub() {
-  const [width, setWidth] = useState(30);
-  const [height, setHeight] = useState(30);
+  const [width, setWidth] = useState(15);
+  const [height, setHeight] = useState(15);
   const [inspectedCell, setInspectedCell] = useState("");
   const [tool, setTool] = useState<ToolType>("pencil");
 

@@ -1,9 +1,6 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { ToolPicker, ToolType } from "./Tools";
 
-// interface Props{
-
-// }
 enum NodeState {
   start = "start",
   end = "end",
@@ -31,12 +28,11 @@ interface Cords {
 interface Props {
   cords: Cords;
   currentTool: ToolType;
-  mouseHold: boolean;
   inspectCell: (cell: string) => void;
 }
 
 export const Node = (props: Props) => {
-  const { cords, inspectCell, currentTool, mouseHold } = props;
+  const { cords, inspectCell, currentTool } = props;
   const [color, setColor] = useState<Colors>(Colors.normal);
   const [discovered, setDiscovered] = useState<boolean>(false);
   const [x, setX] = useState<number>(cords.x);
@@ -82,26 +78,27 @@ export const Node = (props: Props) => {
     isEnd: false,
     isWall: false,
   });
+  const mouseHold = useRef(false);
+
   const handleClick = () => {
-    // console.log(event);
     inspectCell(`x:${x}, y:${y}, ${JSON.stringify(params)}`);
-    console.log(mouseHold);
-    if (mouseHold) {
-      switch (currentTool) {
-        case ToolPicker.pencil:
-          dispatch(NodeState.wall);
-          break;
-        case ToolPicker.eraser:
-          dispatch(NodeState.normal);
-          break;
-        case ToolPicker.end:
-          dispatch(NodeState.end);
-          break;
-        case ToolPicker.start:
-          dispatch(NodeState.start);
-          break;
-      }
+    switch (currentTool) {
+      case ToolPicker.pencil:
+        dispatch(NodeState.wall);
+        break;
+      case ToolPicker.eraser:
+        dispatch(NodeState.normal);
+        break;
+      case ToolPicker.end:
+        dispatch(NodeState.end);
+        break;
+      case ToolPicker.start:
+        dispatch(NodeState.start);
+        break;
     }
+  };
+  const handleEnter = () => {
+    if (mouseHold.current) handleClick();
   };
   useEffect(() => {
     if (params.isStart) {
@@ -114,15 +111,28 @@ export const Node = (props: Props) => {
       setColor(Colors.normal);
     }
   }, [params]);
+  useEffect(() => {
+    const handleMouseDown = () => {
+      mouseHold.current = true;
+    };
+    const handleMouseUp = () => {
+      mouseHold.current = false;
+    };
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
 
   return (
     <div
       className="cell"
       style={{ backgroundColor: color }}
-      //   onClick={() => inspectCell(`x:${x}, y:${y}, ${JSON.stringify(params)}`)}
-      onMouseEnter={handleClick}
-    >
-      {x}
-    </div>
+      onMouseDown={handleClick}
+      onMouseEnter={handleEnter}
+    ></div>
   );
 };
