@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Board } from "../components/Board";
 import Tools, { ToolType } from "../components/Tools";
+import AlgoPanel from "../components/AlgoPanel";
+import { Algorithm } from "../components/AlgoPanel";
 export interface Location {
   x: number;
   y: number;
@@ -13,6 +15,7 @@ export default function Hub() {
   const [height, setHeight] = useState(15);
   const [inspectedCell, setInspectedCell] = useState("");
   const [tool, setTool] = useState<ToolType>("pencil");
+  const [algorithm, setAlgorithm] = useState<Algorithm>("dijkstra");
 
   const checkSize = (stringSize: string): number => {
     const intSize = parseInt(stringSize);
@@ -23,7 +26,7 @@ export default function Hub() {
 
   return (
     <div className="hub">
-      <div>Hub</div>
+      <AlgoPanel setAlgorithm={setAlgorithm} algorithm={algorithm}></AlgoPanel>
       <Tools setTool={setTool} tool={tool}></Tools>
       <div className="cell-data">{inspectedCell}</div>
       <label htmlFor="">

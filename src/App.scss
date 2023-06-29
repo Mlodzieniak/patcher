@@ -12,9 +12,14 @@ $cell-searched: #ffc914;
 $cell-path: #0cca4a;
 $cell-normal: #fcfafa;
 
-$cell-size: 40px;
+$cell-size: 30px;
+body {
+  @include flex-center();
+}
 .hub {
-  width: 80vw;
+  @include flex-center();
+  flex-direction: column;
+  // width: 100%;
   height: 100vh;
   .toolbar {
     .active {
