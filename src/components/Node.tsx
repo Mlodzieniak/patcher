@@ -1,5 +1,13 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import {
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+  MutableRefObject,
+} from "react";
 import { ToolPicker, ToolType } from "./Tools";
+import { Location } from "../pages/Hub";
+import { StartEndLocation } from "./Board";
 
 enum NodeState {
   start = "start",
@@ -21,27 +29,27 @@ interface NodeParams {
   isEnd: boolean;
   isWall: boolean;
 }
-interface Cords {
-  x: number;
-  y: number;
-}
 interface Props {
-  cords: Cords;
+  cords: Location;
   currentTool: ToolType;
   inspectCell: (cell: string) => void;
+  start: StartEndLocation;
+  end: StartEndLocation;
+  setStart: React.Dispatch<React.SetStateAction<StartEndLocation>>;
+  setEnd: React.Dispatch<React.SetStateAction<StartEndLocation>>;
 }
 
 export const Node = (props: Props) => {
-  const { cords, inspectCell, currentTool } = props;
+  const { cords, inspectCell, currentTool, start, end, setStart, setEnd } =
+    props;
+  const { x, y } = cords;
   const [color, setColor] = useState<Colors>(Colors.normal);
   const [discovered, setDiscovered] = useState<boolean>(false);
-  const [x, setX] = useState<number>(cords.x);
-  const [y, setY] = useState<number>(cords.y);
-  //   const [isMouseHold, setMouseHold] = useEffect(mouseHold);
 
   const reducer = (state: NodeParams, action: NodeState) => {
     switch (action) {
       case NodeState.start:
+        setStart({ x, y });
         return {
           ...state,
           isStart: true,
@@ -49,6 +57,8 @@ export const Node = (props: Props) => {
           isWall: false,
         };
       case NodeState.end:
+        setEnd({ x, y });
+
         return {
           ...state,
           isStart: false,
@@ -126,6 +136,14 @@ export const Node = (props: Props) => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
+  useEffect(() => {
+    // console.log("start end change");
+    if (params.isStart && start) {
+      if (start.x !== x || start.y !== y) dispatch(NodeState.normal);
+    } else if (params.isEnd && end) {
+      if (end.x !== x || end.y !== y) dispatch(NodeState.normal);
+    }
+  }, [start, end]);
 
   return (
     <div

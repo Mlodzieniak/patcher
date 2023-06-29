@@ -1,16 +1,23 @@
-import { useEffect, useState, FC, useRef } from "react";
+import { useEffect, useState, FC } from "react";
 import { Node } from "./Node";
-import { ToolType, ToolPicker } from "./Tools";
+import { ToolType } from "./Tools";
+// import { Location } from "../pages/Hub";
 interface Props {
   width: number;
   height: number;
   currentTool: ToolType;
   inspectCell: (cell: string) => void;
 }
+export interface StartEndLocation {
+  x: number | null;
+  y: number | null;
+}
 
 export const Board: FC<Props> = (props) => {
   const { width, height, inspectCell, currentTool } = props;
-  const [board, setBoard] = useState<[]>([]);
+  const [board, setBoard] = useState([]);
+  const [start, setStart] = useState<StartEndLocation>({ x: null, y: null });
+  const [end, setEnd] = useState<StartEndLocation>({ x: null, y: null });
 
   useEffect(() => {
     const newBoard = [];
@@ -23,6 +30,10 @@ export const Board: FC<Props> = (props) => {
             inspectCell={inspectCell}
             key={`${i}${j}`}
             currentTool={currentTool}
+            start={start}
+            end={end}
+            setStart={setStart}
+            setEnd={setEnd}
           />
         );
         row.push(newCell);
@@ -30,13 +41,13 @@ export const Board: FC<Props> = (props) => {
       newBoard.push(row);
     }
     setBoard(newBoard);
-  }, [width, height, currentTool]);
+  }, [width, height, currentTool, start, end]);
   return (
     <div className="board">
       {board.map((row, i) => {
         return (
           <div className="row" key={i}>
-            {row.map((cell) => {
+            {row.map((cell: JSX.Element) => {
               return cell;
             })}
           </div>

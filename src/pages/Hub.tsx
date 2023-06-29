@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Board } from "../components/Board";
 import Tools, { ToolType } from "../components/Tools";
-interface FoundCell {
+export interface Location {
   x: number;
   y: number;
 }
-type CellCords = (event: MouseEvent) => FoundCell;
-type DrawWall = (cords: FoundCell) => void;
+// type CellCords = (event: MouseEvent) => Location;
+// type DrawWall = (cords: Location) => void;
 
 export default function Hub() {
   const [width, setWidth] = useState(15);
@@ -20,14 +20,7 @@ export default function Hub() {
     if (intSize < 10) return 10;
     else return intSize;
   };
-  // const readCell: CellCords = (event) => {
-  //   const x = (event.target as HTMLElement).getAttribute("data-x");
-  //   const y = (event.target as HTMLElement).getAttribute("data-y");
-  //   return { x, y };
-  // };
-  // const drawWall: DrawWall = (cords) => {
-  //   console.log(cords);
-  // };
+
   return (
     <div className="hub">
       <div>Hub</div>
