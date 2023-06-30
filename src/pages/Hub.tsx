@@ -3,6 +3,7 @@ import { Board } from "../components/Board";
 import Tools, { ToolType } from "../components/Tools";
 import AlgoPanel from "../components/AlgoPanel";
 import { Algorithm } from "../components/AlgoPanel";
+import RunButton from "../components/RunButton";
 export interface Location {
   x: number;
   y: number;
@@ -16,7 +17,7 @@ export default function Hub() {
   const [inspectedCell, setInspectedCell] = useState("");
   const [tool, setTool] = useState<ToolType>("pencil");
   const [algorithm, setAlgorithm] = useState<Algorithm>("dijkstra");
-
+  const [run, setRun] = useState<boolean>(false); // When algorithm runs drawing is disabled
   const checkSize = (stringSize: string): number => {
     const intSize = parseInt(stringSize);
     if (intSize > 100) return 100;
@@ -26,6 +27,7 @@ export default function Hub() {
 
   return (
     <div className="hub">
+      <RunButton run={run} setRun={setRun}></RunButton>
       <AlgoPanel setAlgorithm={setAlgorithm} algorithm={algorithm}></AlgoPanel>
       <Tools setTool={setTool} tool={tool}></Tools>
       <div className="cell-data">{inspectedCell}</div>

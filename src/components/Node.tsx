@@ -15,7 +15,7 @@ enum NodeState {
   wall = "wall",
   normal = "normal",
 }
-enum Colors {
+export enum Colors {
   end = "#d72638", // red
   wall = "#232528", // black
   start = "#3f88c5", // blue
