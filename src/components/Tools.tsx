@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 type HandleToolClick = (event: React.MouseEvent<HTMLButtonElement>) => void;
-export type ToolType = "pencil" | "eraser" | "start" | "end";
+export type ToolType = "pencil" | "eraser" | "start" | "end" | "none";
 export enum ToolPicker {
   pencil = "pencil",
   eraser = "eraser",
   start = "start",
   end = "end",
+  none = "none",
 }
 interface Props {
   setTool: (tool: string) => void;
   tool: string;
+  run: boolean;
 }
 export default function Tools(props: Props) {
-  const { tool, setTool } = props;
+  const { tool, setTool, run } = props;
   const handleToolClick: HandleToolClick = (event) => {
     setTool(event.currentTarget.value);
   };
@@ -23,6 +25,7 @@ export default function Tools(props: Props) {
         value={ToolPicker.pencil}
         className={tool === ToolPicker.pencil ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
+        disabled={run}
       >
         Pencil
       </button>
@@ -31,6 +34,7 @@ export default function Tools(props: Props) {
         value={ToolPicker.eraser}
         className={tool === ToolPicker.eraser ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
+        disabled={run}
       >
         Eraser
       </button>
@@ -39,6 +43,7 @@ export default function Tools(props: Props) {
         value={ToolPicker.start}
         className={tool === ToolPicker.start ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
+        disabled={run}
       >
         Set Start
       </button>
@@ -47,10 +52,13 @@ export default function Tools(props: Props) {
         value={ToolPicker.end}
         className={tool === ToolPicker.end ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
+        disabled={run}
       >
         Set End
       </button>
-      <button type="button">Clear</button>
+      <button type="button" disabled={run}>
+        Clear
+      </button>
     </div>
   );
 }

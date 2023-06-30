@@ -9,9 +9,10 @@ export enum AlgorithmPicker {
 interface Props {
   setAlgorithm: (tool: string) => void;
   algorithm: string;
+  run: boolean;
 }
 export default function AlgoPanel(props: Props) {
-  const { algorithm, setAlgorithm } = props;
+  const { algorithm, setAlgorithm, run } = props;
   const handleToolClick: HandleToolClick = (event) => {
     setAlgorithm(event.currentTarget.value);
   };
@@ -22,6 +23,7 @@ export default function AlgoPanel(props: Props) {
         value={AlgorithmPicker.dijkstra}
         className={algorithm === AlgorithmPicker.dijkstra ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
+        disabled={run}
       >
         Dijkstra
       </button>
@@ -30,6 +32,7 @@ export default function AlgoPanel(props: Props) {
         value={AlgorithmPicker.a}
         className={algorithm === AlgorithmPicker.a ? "active" : ""}
         onClick={(event) => handleToolClick(event)}
+        disabled={run}
       >
         A*
       </button>

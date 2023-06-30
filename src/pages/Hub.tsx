@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Board } from "../components/Board";
-import Tools, { ToolType } from "../components/Tools";
+import Tools, { ToolPicker, ToolType } from "../components/Tools";
 import AlgoPanel from "../components/AlgoPanel";
 import { Algorithm } from "../components/AlgoPanel";
 import RunButton from "../components/RunButton";
@@ -25,11 +25,18 @@ export default function Hub() {
     else return intSize;
   };
 
+  useEffect(() => {
+    run ? setTool(ToolPicker.none) : setTool(ToolPicker.pencil);
+  }, [run]);
   return (
     <div className="hub">
       <RunButton run={run} setRun={setRun}></RunButton>
-      <AlgoPanel setAlgorithm={setAlgorithm} algorithm={algorithm}></AlgoPanel>
-      <Tools setTool={setTool} tool={tool}></Tools>
+      <AlgoPanel
+        setAlgorithm={setAlgorithm}
+        algorithm={algorithm}
+        run={run}
+      ></AlgoPanel>
+      <Tools setTool={setTool} tool={tool} run={run}></Tools>
       <div className="cell-data">{inspectedCell}</div>
       <label htmlFor="">
         Width
