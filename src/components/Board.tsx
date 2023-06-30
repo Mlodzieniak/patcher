@@ -7,6 +7,8 @@ interface Props {
   height: number;
   currentTool: ToolType;
   inspectCell: (cell: string) => void;
+  clear: boolean;
+  setClear: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface StartEndLocation {
   x: number | null;
@@ -14,12 +16,12 @@ export interface StartEndLocation {
 }
 
 export const Board: FC<Props> = (props) => {
-  const { width, height, inspectCell, currentTool } = props;
+  const { width, height, inspectCell, currentTool, clear, setClear } = props;
   const [board, setBoard] = useState([]);
   const [start, setStart] = useState<StartEndLocation>({ x: null, y: null });
   const [end, setEnd] = useState<StartEndLocation>({ x: null, y: null });
 
-  useEffect(() => {
+  const createBoard = () => {
     const newBoard = [];
     for (let i = 0; i < height; i++) {
       const row = [];
@@ -34,6 +36,7 @@ export const Board: FC<Props> = (props) => {
             end={end}
             setStart={setStart}
             setEnd={setEnd}
+            clear={clear}
           />
         );
         row.push(newCell);
@@ -41,7 +44,14 @@ export const Board: FC<Props> = (props) => {
       newBoard.push(row);
     }
     setBoard(newBoard);
-  }, [width, height, currentTool, start, end]);
+  };
+  useEffect(createBoard, [width, height, currentTool, start, end, clear]);
+
+  useEffect(() => {
+    if (clear) {
+      setClear(false);
+    }
+  }, [clear]);
   return (
     <div className="board">
       {board.map((row, i) => {

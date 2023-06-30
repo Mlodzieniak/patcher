@@ -12,9 +12,11 @@ interface Props {
   setTool: (tool: string) => void;
   tool: string;
   run: boolean;
+  clear: boolean;
+  setClear: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function Tools(props: Props) {
-  const { tool, setTool, run } = props;
+  const { tool, setTool, run, clear, setClear } = props;
   const handleToolClick: HandleToolClick = (event) => {
     setTool(event.currentTarget.value);
   };
@@ -56,7 +58,13 @@ export default function Tools(props: Props) {
       >
         Set End
       </button>
-      <button type="button" disabled={run}>
+      <button
+        type="button"
+        disabled={run || clear}
+        onClick={() => {
+          setClear(true);
+        }}
+      >
         Clear
       </button>
     </div>

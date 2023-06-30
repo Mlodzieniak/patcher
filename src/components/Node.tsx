@@ -30,6 +30,7 @@ interface NodeParams {
   isWall: boolean;
 }
 interface Props {
+  clear: boolean;
   cords: Location;
   currentTool: ToolType;
   inspectCell: (cell: string) => void;
@@ -40,8 +41,16 @@ interface Props {
 }
 
 export const Node = (props: Props) => {
-  const { cords, inspectCell, currentTool, start, end, setStart, setEnd } =
-    props;
+  const {
+    cords,
+    inspectCell,
+    currentTool,
+    start,
+    end,
+    setStart,
+    setEnd,
+    clear,
+  } = props;
   const { x, y } = cords;
   const [color, setColor] = useState<Colors>(Colors.normal);
   const [discovered, setDiscovered] = useState<boolean>(false);
@@ -144,6 +153,9 @@ export const Node = (props: Props) => {
       if (end.x !== x || end.y !== y) dispatch(NodeState.normal);
     }
   }, [start, end]);
+  useEffect(() => {
+    if (clear) dispatch(NodeState.normal);
+  }, [clear]);
 
   return (
     <div

@@ -18,6 +18,7 @@ export default function Hub() {
   const [tool, setTool] = useState<ToolType>("pencil");
   const [algorithm, setAlgorithm] = useState<Algorithm>("dijkstra");
   const [run, setRun] = useState<boolean>(false); // When algorithm runs drawing is disabled
+  const [clear, setClear] = useState<boolean>(false); // When true board resets itself
   const checkSize = (stringSize: string): number => {
     const intSize = parseInt(stringSize);
     if (intSize > 100) return 100;
@@ -36,7 +37,13 @@ export default function Hub() {
         algorithm={algorithm}
         run={run}
       ></AlgoPanel>
-      <Tools setTool={setTool} tool={tool} run={run}></Tools>
+      <Tools
+        setTool={setTool}
+        tool={tool}
+        run={run}
+        clear={clear}
+        setClear={setClear}
+      ></Tools>
       <div className="cell-data">{inspectedCell}</div>
       <label htmlFor="">
         Width
@@ -64,6 +71,8 @@ export default function Hub() {
         height={height}
         inspectCell={setInspectedCell}
         currentTool={tool}
+        clear={clear}
+        setClear={setClear}
       ></Board>
     </div>
   );
